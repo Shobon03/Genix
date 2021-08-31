@@ -1,0 +1,2 @@
+rootProject.name = "Genix"
+include ':app'

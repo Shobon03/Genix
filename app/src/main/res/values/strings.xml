@@ -1,0 +1,32 @@
+<resources>
+    <!-- Global -->
+    <string name="app_name">Genix</string>
+    <string name="game_name">Genix</string>
+
+
+    <!-- Main activity -->
+    <string name="question">Do you know trivia?</string>
+    <string name="option_play">Play a random game</string>
+    <string name="option_create">Choose your game</string>
+    <string name="option_see_ranking">Your ranking</string>
+
+
+    <!-- About activity -->
+    <string name="about_project">This app was made for PJI discipline in Instituto Federal de São Paulo.</string>
+    <string name="about_devs">Students: <br /> Matheus &#38;&#38; Pedro</string>
+    <string name="about_professor">Professor: Danilo</string>
+    <string name="button_source">Source</string>
+    <string name="button_licenses">OS Licenses</string>
+
+
+    <!-- About activity -->
+    <string name="game_time_remaining">Time <br /> remaining:</string>
+    <string name="game_question">Question:</string>
+    <!-- <string name="game_true">True</string>
+     <string name="game_false">False</string> idk if this will be useful \o/ -->
+
+
+     <!-- Open source licenses -->
+    <string name="feathericons_mobile">feathericons-for-mobile: https://github.com/sharaquss/feathericons-for-mobile</string>
+
+</resources>
