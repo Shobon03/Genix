@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class GameActivity extends AppCompatActivity {
 
     // Image
-    private ImageView closeGame;
+    private ImageView imgCloseGame;
 
 
     // Buttons
@@ -35,6 +35,9 @@ public class GameActivity extends AppCompatActivity {
     private TextView lblTimeRemaining;
 
 
+    // Other
+    int questionIndex = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -45,14 +48,15 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        closeGame = (ImageView) findViewById(R.id.imgCloseGame);
-        closeGame.setOnClickListener(new CloseGameListener());
+        imgCloseGame = (ImageView) findViewById(R.id.imgReturnToMenu);
+        imgCloseGame.setOnClickListener(new CloseGameListener());
 
         lblCurrentQuestion = (TextView) findViewById(R.id.lblCurrentQuestion);
+
         lblCurrentQuestionNumber = (TextView) findViewById(R.id.lblCurrentQuestionNumber);
+        lblCurrentQuestionNumber.setText("1");
 
         btnChoice1 = (Button) findViewById(R.id.btnChoice1);
-        // btnChoice1.setOnClickListener(new ChooseAnswerListener());
 
 
         // FOR TIME REMAINING CREATE THREAD -> https://stackoverflow.com/questions/14814714/update-textview-every-second
@@ -68,6 +72,49 @@ public class GameActivity extends AppCompatActivity {
         try {
 
             jsonQuestionsObject = (JSONObject) jsonParser.parse(questions);
+            JSONArray jsonQuestionsArray = (JSONArray) jsonQuestionsObject.get("results");
+
+            System.out.println(jsonQuestionsArray.toString());
+
+            JSONObject jsonQuestion = (JSONObject) jsonQuestionsArray.get(0);
+            lblCurrentQuestion.setText(jsonQuestion.get("question").toString());
+
+            btnChoice1.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+
+                    questionIndex++;
+
+                    if (questionIndex < jsonQuestionsArray.size()) {
+
+                        JSONObject jsonQuestion = (JSONObject) jsonQuestionsArray.get(questionIndex);
+                        lblCurrentQuestion.setText(jsonQuestion.get("question").toString());
+                        lblCurrentQuestionNumber.setText(Integer.toString(questionIndex + 1));
+
+                    } else {
+
+                        Intent toGameResumeIntent = new Intent(getApplicationContext(), GameResumeActivity.class);
+                        startActivity(toGameResumeIntent);
+                        finish();
+
+                    }
+
+                }
+
+            });
+
+            /*Thread changeQuestions = new Thread() {
+
+                public void run() {
+
+                    JSONObject jsonQuestion = (JSONObject) jsonQuestionsArray.get(0);
+                    lblCurrentQuestion.setText(jsonQuestion.get("question").toString());
+
+                }
+
+            };
+            changeQuestions.start();*/
 
         } catch (ParseException e) {
 
@@ -75,42 +122,8 @@ public class GameActivity extends AppCompatActivity {
 
         }
 
-        JSONArray jsonQuestionsArray = (JSONArray) jsonQuestionsObject.get("results");
-
-        // Write on game
-        Thread thread = new Thread() {
-
-            @Override
-            public void run() {
-
-                for (int i = 0; i < jsonQuestionsArray.size(); i++) {
-
-                    JSONObject jsonQuestion;
-                    while (true) {
-
-                        jsonQuestion = (JSONObject) jsonQuestionsArray.get(i);
-                        // System.out.println(jsonQuestion.get("question").toString());
-                        lblCurrentQuestion.setText(jsonQuestion.get("question").toString());
-
-                        // String questionNumber = Integer.toString(i + 1);
-                        // lblCurrentQuestionNumber.setText(questionNumber);
-
-                        if (btnChoice1.isPressed()) {
-
-                            break;
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        };
-        thread.start();
-
     }
+
 
     // Button listeners
     // Close game

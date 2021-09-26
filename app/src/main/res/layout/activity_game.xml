@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imgCloseGame"
+        android:id="@+id/imgReturnToMenu"
         android:layout_width="30dp"
         android:layout_height="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,7 +29,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imgCloseGame"
+        app:layout_constraintStart_toEndOf="@+id/imgReturnToMenu"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.054" />
 
@@ -82,12 +82,11 @@
 
     <TextView
         android:id="@+id/lblCurrentQuestionNumber"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="236dp"
         android:layout_marginTop="156dp"
         android:fontFamily="@font/questrial"
-        android:text="01"
         android:textAlignment="center"
         android:textColor="#000"
         android:textSize="40sp"
@@ -104,7 +103,7 @@
         android:textColor="#000"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.062"
+        app:layout_constraintHorizontal_bias="0.117"
         app:layout_constraintStart_toEndOf="@+id/lblCurrentQuestionNumber"
         app:layout_constraintTop_toTopOf="parent" />
 
