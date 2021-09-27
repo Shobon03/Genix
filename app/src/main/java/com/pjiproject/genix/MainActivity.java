@@ -15,37 +15,38 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    /* ATTRIBUTES */
     // Buttons
     private Button btnPlayRandomGame;
     private Button btnChooseGame;
     private Button btnGoToRanking;
 
-    private Trivia trivia;
+    // Others
+    Trivia trivia;
+    Thread makeRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        // Setting the theme
+        // Setting the theme + starting the activity
         getApplication().setTheme(R.style.Theme_Design_Light_NoActionBar);
         setTheme(R.style.Theme_Design_Light_NoActionBar);
 
-
-        // Create activity and assign the buttons its values
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
         btnPlayRandomGame = (Button) findViewById(R.id.btnPlayRandomGame);
         btnPlayRandomGame.setOnClickListener(new PlayGameListener());
 
-
-        // Fetch questions
+        // Fetching questions
         trivia = new Trivia();
-        Thread makeRequest = new Thread(trivia);
+        makeRequest = new Thread(trivia);
         makeRequest.start();
 
     }
 
 
+    /* CLASSES */
     // Button listeners
     public class PlayGameListener implements View.OnClickListener {
 

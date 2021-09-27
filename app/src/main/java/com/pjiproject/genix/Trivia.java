@@ -1,16 +1,7 @@
 package com.pjiproject.genix;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-// import org.json.*;
-// import org.json.simple.parser.*;
-
+import java.io.*;
+import java.net.*;
 
 public class Trivia implements Runnable {
 
@@ -19,8 +10,6 @@ public class Trivia implements Runnable {
     public String getQuestions() {
         return questions;
     }
-    // public void setQuestions(String questions) { this.questions = questions; }
-
 
     // Get HTTP data from OpenTriviaDB
     public static String makeRequest(String urlParameters) {
@@ -30,7 +19,7 @@ public class Trivia implements Runnable {
         try {
 
             // Define request
-            URL triviaUrl = new URL("https://opentdb.com/api.php?amount=10");
+            URL triviaUrl = new URL("https://opentdb.com/api.php?amount=10&encode=base64");
 
             URLconnection = (HttpURLConnection) triviaUrl.openConnection();
             URLconnection.setRequestProperty("accept", "application/json");
@@ -46,14 +35,9 @@ public class Trivia implements Runnable {
             wr.close();
 
 
-            //Get Response in JSON format
+            //Get Response
             InputStream is = URLconnection.getInputStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-
-            // If using json to parse...
-            // JSONParser jsonParser = new JSONParser();
-            // Object httpData = jsonParser.parse(rd.readLine());
-
             StringBuilder response = new StringBuilder();
 
             String line;
@@ -66,13 +50,13 @@ public class Trivia implements Runnable {
 
             rd.close();
 
-            // DEBUG TOOL LOOOOOL: System.out.println(response.toString());
+            //System.out.println(decodedString);
 
             return response.toString();
 
         } catch (Exception e) {
 
-            e.printStackTrace();
+            System.out.println("Error in Trivia.makeRequest(): " + e.getMessage());
             return null;
 
         } finally {
@@ -84,6 +68,7 @@ public class Trivia implements Runnable {
             }
 
         }
+
 
     }
 
@@ -97,7 +82,7 @@ public class Trivia implements Runnable {
 
         } catch (Exception e) {
 
-            System.out.println("Error in makeRequest()\n");
+            System.out.println("Error in Run.makeRequest(): " + e.getMessage() + "\n");
 
         }
 
