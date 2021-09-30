@@ -19,8 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.Math;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+import java.util.*;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -47,6 +46,8 @@ public class GameActivity extends AppCompatActivity {
     int gameSeconds = 60;
 
     Thread updateSecondsCounter;
+
+    ArrayList<ArrayList> userAnsweredQuestions = new ArrayList<>();
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -91,7 +92,7 @@ public class GameActivity extends AppCompatActivity {
             jsonQuestionsObject = (JSONObject) jsonParser.parse(questions);
             JSONArray jsonQuestionsArray = (JSONArray) jsonQuestionsObject.get("results");
 
-            System.out.println(jsonQuestionsArray.toString());
+            //System.out.println(jsonQuestionsArray.toString());
 
 
             // Assigns the first question
@@ -111,6 +112,26 @@ public class GameActivity extends AppCompatActivity {
 
                     questionIndex++;
 
+                    switch (view.getId()) {
+
+                        case R.id.btnChoice1:
+                            setUserAnsweredQuestions(lblCurrentQuestion.getText().toString(), btnChoice1.getText().toString());
+                            break;
+
+                        case R.id.btnChoice2:
+                            setUserAnsweredQuestions(lblCurrentQuestion.getText().toString(), btnChoice2.getText().toString());
+                            break;
+
+                        case R.id.btnChoice3:
+                            setUserAnsweredQuestions(lblCurrentQuestion.getText().toString(), btnChoice3.getText().toString());
+                            break;
+
+                        case R.id.btnChoice4:
+                            setUserAnsweredQuestions(lblCurrentQuestion.getText().toString(), btnChoice4.getText().toString());
+                            break;
+
+                    }
+
                     if (questionIndex < jsonQuestionsArray.size() && gameSeconds >= 0) {
 
                         JSONObject jsonQuestion = (JSONObject) jsonQuestionsArray.get(questionIndex);
@@ -123,6 +144,10 @@ public class GameActivity extends AppCompatActivity {
 
                     } else {
 
+                        ArrayList<String> userTime = new ArrayList<>();
+                        userTime.add("time_remaining");
+                        userTime.add(lblTimeRemaining.getText().toString());
+                        userAnsweredQuestions.add(userTime);
                         endGame();
 
                     }
@@ -192,6 +217,7 @@ public class GameActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
+            updateSecondsCounter.interrupt();
             finish();
 
         }
@@ -201,109 +227,128 @@ public class GameActivity extends AppCompatActivity {
 
     /* METHODS */
     // Choose a random button to assign the correct answer
-
-    // TODO: THIS CRASHES WHEN A QUESTION HAS "TRUE" OR "FALSE" CHOICES ONLY. FIND A WAY TO JUST PLACE THOSE CHOICES ON TWO BUTTONS
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void assignAnswersToRandomButton(JSONObject jsonQuestion, JSONArray incorrectAnswers) {
 
-        int randomCorrectAnswer = (int) (Math.random() * (4 - 1 + 1) + 1);
+        String decodedCorrectAnswerString, decodedIncorrectAnswer1String,
+               decodedIncorrectAnswer2String, decodedIncorrectAnswer3String;
+        int randomCorrectAnswer, incorrectAnswer1, incorrectAnswer2, incorrectAnswer3;
 
-        String decodedQuestionAnswerString = decodeBase64data(jsonQuestion.get("correct_answer").toString());
+        decodedCorrectAnswerString = decodeBase64data(jsonQuestion.get("correct_answer").toString());
+        if (decodedCorrectAnswerString.equals("True") || decodedCorrectAnswerString.equals("False")) {
 
-        switch (randomCorrectAnswer) {
+            btnChoice1.setText("True");
+            btnChoice2.setText("False");
+            btnChoice3.setEnabled(false);
+            btnChoice3.setText("");
+            btnChoice4.setEnabled(false);
+            btnChoice4.setText("");
 
-            case 1:
-                btnChoice1.setText(decodedQuestionAnswerString);
-                break;
+        } else {
 
-            case 2:
-                btnChoice2.setText(decodedQuestionAnswerString);
-                break;
+            btnChoice3.setEnabled(true);
+            btnChoice4.setEnabled(true);
 
-            case 3:
-                btnChoice3.setText(decodedQuestionAnswerString);
-                break;
+            randomCorrectAnswer = (int) (Math.random() * (4 - 1 + 1) + 1);
+            switch (randomCorrectAnswer) {
 
-            case 4:
-                btnChoice4.setText(decodedQuestionAnswerString);
-                break;
+                case 1:
+                    btnChoice1.setText(decodedCorrectAnswerString);
+                    break;
 
-        }
+                case 2:
+                    btnChoice2.setText(decodedCorrectAnswerString);
+                    break;
 
-        int incorrectAnswer1 = (int) (Math.random() * (2 - 0 + 1) + 0), incorrectAnswer2 = (int) (Math.random() * (2 - 0 + 1) + 0);
-        while (incorrectAnswer2 == incorrectAnswer1) {
+                case 3:
+                    btnChoice3.setText(decodedCorrectAnswerString);
+                    break;
 
+                case 4:
+                    btnChoice4.setText(decodedCorrectAnswerString);
+                    break;
+
+            }
+
+            incorrectAnswer1 = (int) (Math.random() * (2 - 0 + 1) + 0);
             incorrectAnswer2 = (int) (Math.random() * (2 - 0 + 1) + 0);
+            while (incorrectAnswer2 == incorrectAnswer1) {
 
-        }
+                incorrectAnswer2 = (int) (Math.random() * (2 - 0 + 1) + 0);
 
-        int incorrectAnswer3 = 0;
-        switch (incorrectAnswer1) {
+            }
 
-            case 0:
-                if (incorrectAnswer2 == 1) {
+            incorrectAnswer3 = 0;
+            switch (incorrectAnswer1) {
 
-                    incorrectAnswer3 = 2;
+                case 0:
+                    if (incorrectAnswer2 == 1) {
 
-                } else {
+                        incorrectAnswer3 = 2;
 
-                    incorrectAnswer3 = 1;
+                    } else {
 
-                }
-                break;
+                        incorrectAnswer3 = 1;
 
-            case 1:
-                if (incorrectAnswer2 == 0) {
+                    }
+                    break;
 
-                    incorrectAnswer3 = 2;
+                case 1:
+                    if (incorrectAnswer2 == 0) {
 
-                } else {
+                        incorrectAnswer3 = 2;
 
-                    incorrectAnswer3 = 0;
+                    } else {
 
-                }
-                break;
+                        incorrectAnswer3 = 0;
 
-            case 2:
-                if (incorrectAnswer2 == 0) {
+                    }
+                    break;
 
-                    incorrectAnswer3 = 1;
+                case 2:
+                    if (incorrectAnswer2 == 0) {
 
-                } else {
+                        incorrectAnswer3 = 1;
 
-                    incorrectAnswer3 = 0;
+                    } else {
 
-                }
-                break;
+                        incorrectAnswer3 = 0;
 
-        }
+                    }
+                    break;
 
+            }
 
-        switch (randomCorrectAnswer) {
+            decodedIncorrectAnswer1String = decodeBase64data(incorrectAnswers.get(incorrectAnswer1).toString());
+            decodedIncorrectAnswer2String = decodeBase64data(incorrectAnswers.get(incorrectAnswer2).toString());
+            decodedIncorrectAnswer3String = decodeBase64data(incorrectAnswers.get(incorrectAnswer3).toString());
+            switch (randomCorrectAnswer) {
 
-            case 1:
-                btnChoice2.setText(decodeBase64data(incorrectAnswers.get(incorrectAnswer1).toString()));
-                btnChoice3.setText(decodeBase64data(incorrectAnswers.get(incorrectAnswer2).toString()));
-                btnChoice4.setText(decodeBase64data(incorrectAnswers.get(incorrectAnswer3).toString()));
-                break;
+                case 1:
+                    btnChoice2.setText(decodedIncorrectAnswer1String);
+                    btnChoice3.setText(decodedIncorrectAnswer2String);
+                    btnChoice4.setText(decodedIncorrectAnswer3String);
+                    break;
 
-            case 2:
-                btnChoice1.setText(decodeBase64data(incorrectAnswers.get(incorrectAnswer1).toString()));
-                btnChoice3.setText(decodeBase64data(incorrectAnswers.get(incorrectAnswer2).toString()));
-                btnChoice4.setText(decodeBase64data(incorrectAnswers.get(incorrectAnswer3).toString()));
-                break;
+                case 2:
+                    btnChoice1.setText(decodedIncorrectAnswer1String);
+                    btnChoice3.setText(decodedIncorrectAnswer2String);
+                    btnChoice4.setText(decodedIncorrectAnswer3String);
+                    break;
 
-            case 3:
-                btnChoice1.setText(decodeBase64data(incorrectAnswers.get(incorrectAnswer1).toString()));
-                btnChoice2.setText(decodeBase64data(incorrectAnswers.get(incorrectAnswer2).toString()));
-                btnChoice4.setText(decodeBase64data(incorrectAnswers.get(incorrectAnswer3).toString()));
-                break;
+                case 3:
+                    btnChoice1.setText(decodedIncorrectAnswer1String);
+                    btnChoice2.setText(decodedIncorrectAnswer2String);
+                    btnChoice4.setText(decodedIncorrectAnswer3String);
+                    break;
 
-            case 4:
-                btnChoice1.setText(decodeBase64data(incorrectAnswers.get(incorrectAnswer1).toString()));
-                btnChoice2.setText(decodeBase64data(incorrectAnswers.get(incorrectAnswer2).toString()));
-                btnChoice3.setText(decodeBase64data(incorrectAnswers.get(incorrectAnswer3).toString()));
-                break;
+                case 4:
+                    btnChoice1.setText(decodedIncorrectAnswer1String);
+                    btnChoice2.setText(decodedIncorrectAnswer2String);
+                    btnChoice3.setText(decodedIncorrectAnswer3String);
+                    break;
+
+            }
 
         }
 
@@ -315,7 +360,8 @@ public class GameActivity extends AppCompatActivity {
 
         updateSecondsCounter.interrupt();
 
-        Intent toGameResumeIntent = new Intent(getApplicationContext(), GameResumeActivity.class);
+        Intent toGameResumeIntent = new Intent(getApplicationContext(), GameOverviewActivity.class);
+        toGameResumeIntent.putExtra("userAnswers", userAnsweredQuestions.toString());
         startActivity(toGameResumeIntent);
         finish();
 
@@ -328,6 +374,18 @@ public class GameActivity extends AppCompatActivity {
 
         byte[] decodedBytes = Base64.getDecoder().decode(stringToBeDecoded);
         return new String(decodedBytes);
+
+    }
+
+
+    // Places user answered question on an ArrayList
+    public void setUserAnsweredQuestions(String question, String answer) {
+
+        ArrayList<String> formattedQuestion = new ArrayList<>();
+        formattedQuestion.add(question);
+        formattedQuestion.add(answer);
+
+        userAnsweredQuestions.add(formattedQuestion);
 
     }
 

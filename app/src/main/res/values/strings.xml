@@ -19,14 +19,17 @@
     <string name="button_licenses">OS Licenses</string>
 
 
-    <!-- About activity -->
+    <!-- Open source licenses -->
+    <string name="feathericons_mobile">feathericons-for-mobile: https://github.com/sharaquss/feathericons-for-mobile</string>
+
+
+    <!-- Game activity -->
     <string name="game_time_remaining">Time <br /> remaining:</string>
     <string name="game_question">Question:</string>
-    <!-- <string name="game_true">True</string>
-     <string name="game_false">False</string> idk if this will be useful \o/ -->
 
 
-     <!-- Open source licenses -->
-    <string name="feathericons_mobile">feathericons-for-mobile: https://github.com/sharaquss/feathericons-for-mobile</string>
+    <!-- Game overview activity -->
+    <string name="game_overview">Last game overview:</string>
+    <string name="game_overview_time">Time:</string>
 
 </resources>
