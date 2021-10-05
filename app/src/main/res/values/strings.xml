@@ -4,6 +4,13 @@
     <string name="game_name">Genix</string>
 
 
+    <!-- Tutorial activity -->
+    <string name="about_genix">Genix is a Trivia game. Questions are fetched from OpenTriviaDB.</string>
+    <string name="about_random_game">Play a random game with all kinds of questions.</string>
+    <string name="about_make_game">Or create a game. You can choose the time, number of questions, difficulty, theme and type of questions.</string>
+    <string name="about_play">Lessgo!</string>
+
+
     <!-- Main activity -->
     <string name="question">Do you know trivia?</string>
     <string name="option_play">Play a random game</string>
@@ -12,8 +19,9 @@
 
 
     <!-- About activity -->
-    <string name="about_project">This app was made for PJI discipline in Instituto Federal de São Paulo.</string>
-    <string name="about_devs">Students: <br /> Matheus &#38;&#38; Pedro</string>
+    <string name="about_name">About</string>
+    <string name="about_project">This app was made as a project for PJI discipline at Instituto Federal de São Paulo.</string>
+    <string name="about_devs">Students: Matheus &#38;&#38; Pedro</string>
     <string name="about_professor">Professor: Danilo</string>
     <string name="button_source">Source</string>
     <string name="button_licenses">OS Licenses</string>
@@ -32,4 +40,63 @@
     <string name="game_overview">Last game overview:</string>
     <string name="game_overview_time">Time:</string>
 
+    <!-- Create game activity -->
+    <string name="create_game">Create your game</string>
+    <string name="create_category">Category:</string>
+    <string name="create_number">Number of questions:</string>
+    <string name="create_difficulty">Difficulty:</string>
+    <string name="create_type">Type of questions:</string>
+    <string name="create_time">Time:</string>
+    <string name="create_generate">Generate game!</string>
+    <string name="create_reset">Reset</string>
+
+    <!-- String-arrays -->
+    <string-array name="create_arr_category">
+        <item>Any</item>
+        <item>General Knowledge</item>
+        <item>Entertainment: Books</item>
+        <item>Entertainment: Film</item>
+        <item>Entertainment: Music</item>
+        <item>Entertainment: Musicals &amp; Theatres</item>
+        <item>Entertainment: Television</item>
+        <item>Entertainment: Video Games</item>
+        <item>Entertainment: Board Games</item>
+        <item>Entertainment: Japanese Anime &amp; Manga</item>
+        <item>Entertainment: Cartoon &amp; Animations</item>
+        <item>Entertainment: Comics</item>
+        <item>Science: Gadgets</item>
+        <item>Science &amp; Nature</item>
+        <item>Science: Computers</item>
+        <item>Science: Mathematics</item>
+        <item>Mythology</item>
+        <item>Sports</item>
+        <item>Geography</item>
+        <item>History</item>
+        <item>Politics</item>
+        <item>Art</item>
+        <item>Celebrities</item>
+        <item>Animals</item>
+        <item>Vehicles</item>
+    </string-array>
+    <string-array name="create_arr_difficulty">
+        <item>Any</item>
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
+    <string-array name="create_arr_type">
+        <item>Any</item>
+        <item>Multiple questions</item>
+        <item>True or False</item>
+    </string-array>
+    <string-array name="create_arr_time">
+        <item>30s</item>
+        <item>60s</item>
+        <item>90s</item>
+    </string-array>
+    <string-array name="create_arr_questions">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+    </string-array>
 </resources>

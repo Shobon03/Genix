@@ -3,13 +3,31 @@ package com.pjiproject.genix;
 import java.io.*;
 import java.net.*;
 
-public class Trivia implements Runnable {
+public class FetchQuestions implements Runnable {
 
+    /* ATTRIBUTES */
     private String questions;
+    private String urlParameters;
 
+
+    /* CONSTRUCTOR */
+    public FetchQuestions(String urlParameters) {
+
+        super();
+        this.urlParameters = urlParameters;
+
+    }
+
+
+    /* METHODS */
+    // Attribute getters
     public String getQuestions() {
         return questions;
     }
+    public String getURLParameters() {
+        return urlParameters;
+    }
+
 
     // Get HTTP data from OpenTriviaDB
     public static String makeRequest(String urlParameters) {
@@ -73,12 +91,12 @@ public class Trivia implements Runnable {
     }
 
 
-    // Threadding
+    // Threading
     public void run() {
 
         try {
 
-            questions = makeRequest("");
+            questions = makeRequest(getURLParameters());
 
         } catch (Exception e) {
 

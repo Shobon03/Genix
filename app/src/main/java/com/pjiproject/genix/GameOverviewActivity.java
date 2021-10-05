@@ -1,5 +1,3 @@
-// activity_game_resume.xml
-
 package com.pjiproject.genix;
 
 import android.content.Intent;
