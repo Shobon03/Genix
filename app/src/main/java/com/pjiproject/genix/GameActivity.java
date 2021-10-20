@@ -1,6 +1,7 @@
 package com.pjiproject.genix;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -36,16 +37,28 @@ public class GameActivity extends AppCompatActivity {
     // Texts
     private TextView lblCurrentQuestion;
     private TextView lblCurrentQuestionNumber;
+    private TextView lblSlashAllQuestionsNumber;
     private TextView lblTimeRemaining;
+
+
+    // Colors
+    int disabledButtonColor = Color.rgb(212, 212, 212);
+    int yellowColor = Color.rgb(255, 206, 132);
+    int falseColor = Color.rgb(255,  89, 89);
+    int trueColor = Color.rgb(34,  207, 0);
 
 
     // Others
     int questionIndex = 0;
-    int gameSeconds = 60;
+    int gameSeconds = 0;
+
+    String questions, time;
 
     Thread updateSecondsCounter;
 
-    ArrayList<ArrayList> userAnsweredQuestions = new ArrayList<>();
+    ArrayList<String> justQuestions = new ArrayList<>();
+    ArrayList<String> correctAnswers = new ArrayList<>();
+    ArrayList<String> userAnswers = new ArrayList<>();
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -60,15 +73,17 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         imgCloseGame = findViewById(R.id.imgReturnToMenu);
-        imgCloseGame.setOnClickListener(new CloseGameListener());
+        imgCloseGame.setOnClickListener(view -> {
+            updateSecondsCounter.interrupt();
+            finish();
+        });
 
         lblCurrentQuestion = findViewById(R.id.lblCurrentQuestion);
 
+        lblSlashAllQuestionsNumber = findViewById(R.id.lblSlashAllQuestionsNumber);
+
         lblCurrentQuestionNumber = findViewById(R.id.lblCurrentQuestionNumber);
         lblCurrentQuestionNumber.setText("1");
-
-        lblTimeRemaining = findViewById(R.id.lblTimeRemaining);
-        lblTimeRemaining.setText(Integer.toString(gameSeconds));
 
         btnChoice1 = findViewById(R.id.btnChoice1);
         btnChoice2 = findViewById(R.id.btnChoice2);
@@ -76,9 +91,26 @@ public class GameActivity extends AppCompatActivity {
         btnChoice4 = findViewById(R.id.btnChoice4);
 
 
-        // Get questions from MainActivity intent
-        Intent mainActivityIntent = getIntent();
-        String questions = mainActivityIntent.getStringExtra("questionsString");
+        // Get questions
+        Intent activityIntent = getIntent();
+        questions = activityIntent.getStringExtra("questionsString");
+
+
+        // Checks if it's a game created by player
+        if (activityIntent.getStringExtra("type").equals("0")) {
+
+            time = "60";
+
+        } else {
+
+            time = activityIntent.getStringExtra("time");
+
+        }
+
+        lblTimeRemaining = findViewById(R.id.lblTimeRemaining);
+        lblTimeRemaining.setText(time);
+
+        gameSeconds = Integer.parseInt(time);
 
 
         // Parse string data to JSON data
@@ -90,15 +122,15 @@ public class GameActivity extends AppCompatActivity {
             jsonQuestionsObject = (JSONObject) jsonParser.parse(questions);
             JSONArray jsonQuestionsArray = (JSONArray) jsonQuestionsObject.get("results");
 
-            //System.out.println(jsonQuestionsArray.toString());
-
+            lblSlashAllQuestionsNumber.setText("/ " + jsonQuestionsArray.size());
 
             // Assigns the first question
             JSONObject jsonQuestion = (JSONObject) jsonQuestionsArray.get(0);
             lblCurrentQuestion.setText(decodeBase64data(jsonQuestion.get("question").toString()));
 
-            JSONArray incorrectAnswers = (JSONArray) jsonQuestion.get("incorrect_answers");
+            justQuestions.add(decodeBase64data(jsonQuestion.get("question").toString()));
 
+            JSONArray incorrectAnswers = (JSONArray) jsonQuestion.get("incorrect_answers");
             assignAnswersToRandomButton(jsonQuestion, incorrectAnswers);
 
 
@@ -113,19 +145,19 @@ public class GameActivity extends AppCompatActivity {
                     switch (view.getId()) {
 
                         case R.id.btnChoice1:
-                            setUserAnsweredQuestions(lblCurrentQuestion.getText().toString(), btnChoice1.getText().toString());
+                            userAnswers.add(btnChoice1.getText().toString());
                             break;
 
                         case R.id.btnChoice2:
-                            setUserAnsweredQuestions(lblCurrentQuestion.getText().toString(), btnChoice2.getText().toString());
+                            userAnswers.add(btnChoice2.getText().toString());
                             break;
 
                         case R.id.btnChoice3:
-                            setUserAnsweredQuestions(lblCurrentQuestion.getText().toString(), btnChoice3.getText().toString());
+                            userAnswers.add(btnChoice3.getText().toString());
                             break;
 
                         case R.id.btnChoice4:
-                            setUserAnsweredQuestions(lblCurrentQuestion.getText().toString(), btnChoice4.getText().toString());
+                            userAnswers.add(btnChoice4.getText().toString());
                             break;
 
                     }
@@ -138,15 +170,13 @@ public class GameActivity extends AppCompatActivity {
                         lblCurrentQuestion.setText(decodeBase64data(jsonQuestion.get("question").toString()));
                         lblCurrentQuestionNumber.setText(Integer.toString(questionIndex + 1));
 
+                        justQuestions.add(decodeBase64data(jsonQuestion.get("question").toString()));
+
                         assignAnswersToRandomButton(jsonQuestion, incorrectAnswers);
 
                     } else {
 
-                        ArrayList<String> userTime = new ArrayList<>();
-                        userTime.add("time_remaining");
-                        userTime.add(lblTimeRemaining.getText().toString());
-                        userAnsweredQuestions.add(userTime);
-                        endGame();
+                        endGame(justQuestions, correctAnswers, userAnswers, lblTimeRemaining.getText().toString());
 
                     }
 
@@ -180,7 +210,7 @@ public class GameActivity extends AppCompatActivity {
 
                                 } else {
 
-                                    endGame();
+                                    endGame(justQuestions, correctAnswers, userAnswers, lblTimeRemaining.getText().toString());
 
                                 }
 
@@ -208,21 +238,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
-    /* CLASSES */
-    // Button listeners
-    public class CloseGameListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-
-            updateSecondsCounter.interrupt();
-            finish();
-
-        }
-
-    }
-
-
     /* METHODS */
     // Choose a random button to assign the correct answer
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -233,19 +248,33 @@ public class GameActivity extends AppCompatActivity {
         int randomCorrectAnswer, incorrectAnswer1, incorrectAnswer2, incorrectAnswer3;
 
         decodedCorrectAnswerString = decodeBase64data(jsonQuestion.get("correct_answer").toString());
+        correctAnswers.add(decodedCorrectAnswerString);
         if (decodedCorrectAnswerString.equals("True") || decodedCorrectAnswerString.equals("False")) {
 
-            btnChoice1.setText("True");
-            btnChoice2.setText("False");
+            btnChoice1.setText(R.string.game_true);
+            btnChoice2.setText(R.string.game_false);
+
+            btnChoice1.setBackgroundColor(trueColor);
+            btnChoice2.setBackgroundColor(falseColor);
+
             btnChoice3.setEnabled(false);
-            btnChoice3.setText("");
             btnChoice4.setEnabled(false);
+
+            btnChoice3.setText("");
             btnChoice4.setText("");
+
+            btnChoice3.setBackgroundColor(disabledButtonColor);
+            btnChoice4.setBackgroundColor(disabledButtonColor);
 
         } else {
 
             btnChoice3.setEnabled(true);
             btnChoice4.setEnabled(true);
+
+            btnChoice1.setBackgroundColor(yellowColor);
+            btnChoice2.setBackgroundColor(yellowColor);
+            btnChoice3.setBackgroundColor(yellowColor);
+            btnChoice4.setBackgroundColor(yellowColor);
 
             randomCorrectAnswer = (int) (Math.random() * (4 - 1 + 1) + 1);
             switch (randomCorrectAnswer) {
@@ -354,12 +383,18 @@ public class GameActivity extends AppCompatActivity {
 
 
     // Stops game when the time has ended or the user answered all questions
-    public void endGame() {
+    public void endGame(ArrayList<String> justQuestions, ArrayList<String> correctAnswers, ArrayList<String> userAnswers, String userTime) {
 
         updateSecondsCounter.interrupt();
 
         Intent toGameResumeIntent = new Intent(getApplicationContext(), GameOverviewActivity.class);
-        toGameResumeIntent.putExtra("userAnswers", userAnsweredQuestions.toString());
+        toGameResumeIntent.putExtra("questions", justQuestions.toString());
+        toGameResumeIntent.putExtra("correctAnswers", correctAnswers.toString());
+        toGameResumeIntent.putExtra("userAnswers", userAnswers.toString());
+        toGameResumeIntent.putExtra("userTime", Integer.toString(60 - Integer.parseInt(userTime)));
+
+        questions = "";
+
         startActivity(toGameResumeIntent);
         finish();
 
@@ -372,18 +407,6 @@ public class GameActivity extends AppCompatActivity {
 
         byte[] decodedBytes = Base64.getDecoder().decode(stringToBeDecoded);
         return new String(decodedBytes);
-
-    }
-
-
-    // Places user answered question on an ArrayList
-    public void setUserAnsweredQuestions(String question, String answer) {
-
-        ArrayList<String> formattedQuestion = new ArrayList<>();
-        formattedQuestion.add(question);
-        formattedQuestion.add(answer);
-
-        userAnsweredQuestions.add(formattedQuestion);
 
     }
 

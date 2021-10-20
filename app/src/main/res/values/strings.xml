@@ -34,11 +34,16 @@
     <!-- Game activity -->
     <string name="game_time_remaining">Time <br /> remaining:</string>
     <string name="game_question">Question:</string>
+    <string name="game_true">True</string>
+    <string name="game_false">False</string>
+
 
 
     <!-- Game overview activity -->
     <string name="game_overview">Last game overview:</string>
     <string name="game_overview_time">Time:</string>
+    <string name="game_overview_correct_answers">Your answers:</string>
+
 
     <!-- Create game activity -->
     <string name="create_game">Create your game</string>
@@ -50,10 +55,12 @@
     <string name="create_generate">Generate game!</string>
     <string name="create_reset">Reset</string>
 
+
     <!-- String-arrays -->
     <string-array name="create_arr_category">
         <item>Any</item>
         <item>General Knowledge</item>
+
         <item>Entertainment: Books</item>
         <item>Entertainment: Film</item>
         <item>Entertainment: Music</item>
@@ -61,10 +68,6 @@
         <item>Entertainment: Television</item>
         <item>Entertainment: Video Games</item>
         <item>Entertainment: Board Games</item>
-        <item>Entertainment: Japanese Anime &amp; Manga</item>
-        <item>Entertainment: Cartoon &amp; Animations</item>
-        <item>Entertainment: Comics</item>
-        <item>Science: Gadgets</item>
         <item>Science &amp; Nature</item>
         <item>Science: Computers</item>
         <item>Science: Mathematics</item>
@@ -77,6 +80,10 @@
         <item>Celebrities</item>
         <item>Animals</item>
         <item>Vehicles</item>
+        <item>Entertainment: Comics</item>
+        <item>Science: Gadgets</item>
+        <item>Entertainment: Japanese Anime &amp; Manga</item>
+        <item>Entertainment: Cartoon &amp; Animations</item>
     </string-array>
     <string-array name="create_arr_difficulty">
         <item>Any</item>
@@ -90,13 +97,13 @@
         <item>True or False</item>
     </string-array>
     <string-array name="create_arr_time">
-        <item>30s</item>
         <item>60s</item>
         <item>90s</item>
+        <item>30s</item>
     </string-array>
     <string-array name="create_arr_questions">
-        <item>5</item>
         <item>10</item>
+        <item>5</item>
         <item>15</item>
     </string-array>
 </resources>

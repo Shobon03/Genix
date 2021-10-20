@@ -37,7 +37,7 @@ public class FetchQuestions implements Runnable {
         try {
 
             // Define request
-            URL triviaUrl = new URL("https://opentdb.com/api.php?amount=10&encode=base64");
+            URL triviaUrl = new URL("https://opentdb.com/api.php?encode=base64" + urlParameters);
 
             URLconnection = (HttpURLConnection) triviaUrl.openConnection();
             URLconnection.setRequestProperty("accept", "application/json");
@@ -68,7 +68,7 @@ public class FetchQuestions implements Runnable {
 
             rd.close();
 
-            //System.out.println(decodedString);
+            System.out.println("On FetchQuestions: " + response.toString());
 
             return response.toString();
 

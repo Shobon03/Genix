@@ -20,15 +20,19 @@ public class GameOverviewActivity extends AppCompatActivity {
 
 
     // ListView
-    //private ListView listUserAnswers;
+    private ListView listUserAnswers;
 
 
     // TextView
-    private TextView lblGameOverview;
+    private TextView lblTime;
+    private TextView lblAnswers;
 
 
-    // Others
-    //ArrayList<String[]> fetchedUserAnsweredQuestions;
+    /* Others
+    ArrayList<String> answeredQuestions;
+    ArrayList<String> correctAnswers;
+    ArrayList<String> userAnswers;*/
+
 
 
     @Override
@@ -42,46 +46,40 @@ public class GameOverviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game_overview);
 
         returnToMenu = findViewById(R.id.imgReturnToMenu);
-        returnToMenu.setOnClickListener(new toMenuGameListener());
+        returnToMenu.setOnClickListener(view -> finish());
 
-        lblGameOverview = findViewById(R.id.lblGameOverview);
-        lblGameOverview.setText("This is still a WIP :)");
 
-        /*
+        /* TODO: a proper way top get questions and show the user
+        // Create list
+        Intent gameActivityIntent = getIntent();
+        String questions = gameActivityIntent.getStringExtra("questions");
+        String correctAnswersString = gameActivityIntent.getStringExtra("correctAnswers");
+        String answers = gameActivityIntent.getStringExtra("userAnswers");
+        String time = gameActivityIntent.getStringExtra("userTime");
+
+        lblTime = findViewById(R.id.lblTimeInSeconds);
+        lblTime.setText(time + " s");
+
+        answeredQuestions = new ArrayList<>(Arrays.asList(questions.split("\\s*,\\s*")));
+        correctAnswers = new ArrayList<>(Arrays.asList(correctAnswersString.split("\\s*,\\s*")));
+        userAnswers = new ArrayList<>(Arrays.asList(answers.split("\\s*,\\s*")));
+
+        lblAnswers = findViewById(R.id.lblAnswers);
+        lblAnswers.setText(Integer.toString(answeredQuestions.size() - correctAnswers.size()) + " / " + Integer.toString(answeredQuestions.size()));
+
         listUserAnswers = findViewById(R.id.listUserAnswers);
 
-        lblTimeInSeconds = findViewById(R.id.lblTimeInSeconds);
-
-
-        // Get user's answers and parse them back to ArrayList
-        Intent gameActivityIntent = getIntent();
-        String[] lastGameAsArray = gameActivityIntent.getStringExtra("userAnswers").split(",");
-        fetchedUserAnsweredQuestions = new ArrayList(Arrays.asList(lastGameAsArray));
 
         // Create ListView Adapter
         ArrayAdapter<String> listAdapter = new ArrayAdapter(
 
-                this,
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                fetchedUserAnsweredQuestions
+            getApplicationContext(),
+            android.R.layout.simple_list_item_1,
+            android.R.id.text1,
+            answeredQuestions
 
         );
-        listUserAnswers.setAdapter(listAdapter);
-         */
-    }
-
-
-    // Button listeners
-    // Go to menu
-    public class toMenuGameListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-
-            finish();
-
-        }
+        listUserAnswers.setAdapter(listAdapter);*/
 
     }
 

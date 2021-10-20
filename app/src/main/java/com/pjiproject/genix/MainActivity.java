@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Fetching questions
-        fetchQuestions = new FetchQuestions("");
+        fetchQuestions = new FetchQuestions("&amount=10");
         makeRequest = new Thread(fetchQuestions);
         makeRequest.start();
 
@@ -77,9 +77,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-            // Goto game activity
+            // Go to game activity
             Intent toGameActivityIntent = new Intent(getApplicationContext(), GameActivity.class);
             toGameActivityIntent.putExtra("questionsString", fetchQuestions.getQuestions());
+            toGameActivityIntent.putExtra("type", "0");
 
             startActivity(toGameActivityIntent);
 
@@ -90,9 +91,9 @@ public class MainActivity extends AppCompatActivity {
     public class CreateGameListener implements View.OnClickListener {
 
         @Override
-        public void onClick (View view){
+        public void onClick (View view) {
 
-            // Goto create game activity
+            // Go to create game activity
             Intent toCreateGameActivityIntent = new Intent(getApplicationContext(), CreateGameActivity.class);
             startActivity(toCreateGameActivityIntent);
 
@@ -103,9 +104,9 @@ public class MainActivity extends AppCompatActivity {
     public class AboutActivityListener implements View.OnClickListener {
 
         @Override
-        public void onClick (View view){
+        public void onClick (View view) {
 
-            // Goto about activity
+            // Go to about activity
             Intent toCreateGameActivityIntent = new Intent(getApplicationContext(), AboutActivity.class);
             startActivity(toCreateGameActivityIntent);
 
