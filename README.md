@@ -1,7 +1,11 @@
 # Genix
 
 Genix is a *Trivia* game for Android, written in Java.
+
 This app uses [OpenTriviaDB](https://opentdb.com/)'s API to fetch questions.
+
+Genix was made as a project for Projeto Integrador (PJI) at IFSP.
+
 
 # Table of contents
 - [Dependencies](#dependencies)
@@ -9,6 +13,7 @@ This app uses [OpenTriviaDB](https://opentdb.com/)'s API to fetch questions.
 - [Screenshots](#screentshots)
 - [License](#license)
 - [Thanks](#thanks)
+
 
 ## Dependencies
 Genix uses these dependencies and other cool stuff:
