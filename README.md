@@ -1,12 +1,32 @@
 # Genix
 
-This is a Trivia game for Android.
+Genix is a *Trivia* game for Android, written in Java.
+This app uses [OpenTriviaDB](https://opentdb.com/)'s API to fetch questions.
 
-TODO README.MD lol
+# Table of contents
+[Dependencies](#dependencies)
+[Building](#building)
+[Screenshots](#screentshots)
+[License](#license)
+[Thanks](#thanks)
+
+## Dependencies
+Genix uses these dependencies and other cool stuff:
+- [JSONSimple](https://code.google.com/archive/p/json-simple/) - Simple JSON parser for Java (Apache License 2.0);
+- [feather-icons-for-mobile](https://github.com/przemek-jablonski/feathericons-for-mobile) - Feather Icons but for mobile (MIT License).
+
+
+## Building
+This is our first Android project, so evertyhing has been made using Android Studio.
+To build and run the app, we used AS's integrated Run button.
+
+
+## Screenshots
+TODO...
+
 
 ## License
-
-This software is under the GPL3.0 license.
+This software is under the [GPL3.0 license](./LICENSE).
 
 ```
 Copyright (C) 2021  Matheus and Pedro
