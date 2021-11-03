@@ -9,6 +9,11 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 public class CreateGameActivity extends AppCompatActivity {
 
     /* ATTRIBUTES */
@@ -29,9 +34,9 @@ public class CreateGameActivity extends AppCompatActivity {
     private Spinner spinnerTime;
 
 
-    /* Others
+    // Others
     FetchQuestions fetchQuestions;
-    Thread makeRequest; */
+    String questions;
 
     int categoryId, amountId, difficultyId, questionTypeId, timeId;
     String category, amount, difficulty, type, time, urlParameters;
@@ -58,7 +63,7 @@ public class CreateGameActivity extends AppCompatActivity {
             categoryId = (int) spinnerCategory.getSelectedItemId();
 
             spinnerQuestions = findViewById(R.id.spinnerQuestions);
-            amountId = (int) spinnerCategory.getSelectedItemId();
+            amountId = (int) spinnerQuestions.getSelectedItemId();
 
             spinnerDifficulty = findViewById(R.id.spinnerDifficulty);
             difficultyId = (int) spinnerDifficulty.getSelectedItemId();
@@ -255,24 +260,37 @@ public class CreateGameActivity extends AppCompatActivity {
                     "&type=" + type;
 
 
-            // System.out.println(urlParameters);
+            System.out.println(amount);
+            System.out.println(amountId);
 
-            /* DOESN'T WORK, TRYIN' TO FIX
             fetchQuestions = new FetchQuestions(urlParameters);
-            makeRequest = new Thread(fetchQuestions);
-            makeRequest.start();
 
-            System.out.print("On CreateActivity: " + fetchQuestions.getQuestions());
+            ExecutorService service;
+            Future<String> task;
 
-            makeRequest.interrupt();
+            service = Executors.newFixedThreadPool(1);
+            task = service.submit(fetchQuestions);
+
+            try {
+
+                questions = task.get();
+                System.out.println(questions);
+
+            } catch(InterruptedException | ExecutionException e) {
+
+                e.printStackTrace();
+
+            }
+
+            System.out.print("On CreateActivity: " + questions);
 
             Intent toGameActivityIntent = new Intent(getApplicationContext(), GameActivity.class);
-            toGameActivityIntent.putExtra("questionsString", fetchQuestions.getQuestions());
+            toGameActivityIntent.putExtra("questionsString", questions);
             toGameActivityIntent.putExtra("time", time);
             toGameActivityIntent.putExtra("type", "1");
 
             startActivity(toGameActivityIntent);
-            finish();*/
+            finish();
 
         });
 

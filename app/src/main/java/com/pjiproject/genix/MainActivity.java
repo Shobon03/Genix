@@ -9,6 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 public class MainActivity extends AppCompatActivity {
 
     /* ATTRIBUTES */
@@ -24,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Others
     FetchQuestions fetchQuestions;
-    Thread makeRequest;
+    String questions;
 
 
     @Override
@@ -62,11 +67,6 @@ public class MainActivity extends AppCompatActivity {
         imgAbout.setOnClickListener(new AboutActivityListener());
 
 
-        // Fetching questions
-        fetchQuestions = new FetchQuestions("&amount=10");
-        makeRequest = new Thread(fetchQuestions);
-        makeRequest.start();
-
     }
 
 
@@ -77,9 +77,29 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
+            // Fetching questions
+            fetchQuestions = new FetchQuestions("&amount=10");
+
+            ExecutorService service;
+            Future<String> task;
+
+            service = Executors.newFixedThreadPool(1);
+            task = service.submit(fetchQuestions);
+
+            try {
+
+                questions = task.get();
+                System.out.println(questions);
+
+            } catch(InterruptedException | ExecutionException e) {
+
+                e.printStackTrace();
+
+            }
+
             // Go to game activity
             Intent toGameActivityIntent = new Intent(getApplicationContext(), GameActivity.class);
-            toGameActivityIntent.putExtra("questionsString", fetchQuestions.getQuestions());
+            toGameActivityIntent.putExtra("questionsString", questions);
             toGameActivityIntent.putExtra("type", "0");
 
             startActivity(toGameActivityIntent);

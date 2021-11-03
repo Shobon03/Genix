@@ -74,8 +74,10 @@ public class GameActivity extends AppCompatActivity {
 
         imgCloseGame = findViewById(R.id.imgReturnToMenu);
         imgCloseGame.setOnClickListener(view -> {
+
             updateSecondsCounter.interrupt();
             finish();
+
         });
 
         lblCurrentQuestion = findViewById(R.id.lblCurrentQuestion);

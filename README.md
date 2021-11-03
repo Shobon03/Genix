@@ -54,4 +54,21 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 We thank all our professors for helping us achieve everything in this project.
 And we also thank everybody involved in OpenTriviaDB for giving us this awesome API.
 
+### Code Snippets
+
+Here's a list of links of code snippets that were used on Genix.
+
+- [Make TextView update every second](https://stackoverflow.com/questions/14814714/update-textview-every-second)
+	- Answer by ***endian***
+- [See if user has opened the App before]()
+    - Answer by ***TBA***
+- [Change theme in Activity]()
+    - Answer by ***TBA***
+- [Make HTTP request in Java](https://stackoverflow.com/questions/1359689/how-to-send-http-request-in-java)
+	- Answer by ***duffymo***
+- [Make a Thread return an object](https://stackoverflow.com/questions/3141158/how-can-a-thread-return-a-value-after-finishing-its-job)
+    - Answer by ***TofuBeer***
+
+We want to thank everybody that has written these pieces of code, cause it helped us a lot when doing this project!
+
 And thank you for taking a look here (っ˘ω˘ς )

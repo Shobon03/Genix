@@ -42,7 +42,7 @@
     <!-- Game overview activity -->
     <string name="game_overview">Last game overview:</string>
     <string name="game_overview_time">Time:</string>
-    <string name="game_overview_correct_answers">Your answers:</string>
+    <string name="game_overview_correct_answers">Correct answers:</string>
 
 
     <!-- Create game activity -->

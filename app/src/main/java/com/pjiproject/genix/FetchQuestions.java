@@ -2,8 +2,9 @@ package com.pjiproject.genix;
 
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.Callable;
 
-public class FetchQuestions implements Runnable {
+public class FetchQuestions implements Callable<String> {
 
     /* ATTRIBUTES */
     private String questions;
@@ -21,12 +22,8 @@ public class FetchQuestions implements Runnable {
 
     /* METHODS */
     // Attribute getters
-    public String getQuestions() {
-        return questions;
-    }
-    public String getURLParameters() {
-        return urlParameters;
-    }
+    public String getQuestions() { return questions; }
+    public String getURLParameters() { return urlParameters; }
 
 
     // Get HTTP data from OpenTriviaDB
@@ -92,17 +89,10 @@ public class FetchQuestions implements Runnable {
 
 
     // Threading
-    public void run() {
+    public String call() throws InterruptedException {
 
-        try {
-
-            questions = makeRequest(getURLParameters());
-
-        } catch (Exception e) {
-
-            System.out.println("Error in Run.makeRequest(): " + e.getMessage() + "\n");
-
-        }
+        questions = makeRequest(getURLParameters());
+        return getQuestions();
 
     }
 
