@@ -348,6 +348,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
 
+
             decodedIncorrectAnswer1String = decodeBase64data(incorrectAnswers.get(incorrectAnswer1).toString());
             decodedIncorrectAnswer2String = decodeBase64data(incorrectAnswers.get(incorrectAnswer2).toString());
             decodedIncorrectAnswer3String = decodeBase64data(incorrectAnswers.get(incorrectAnswer3).toString());
@@ -385,7 +386,12 @@ public class GameActivity extends AppCompatActivity {
 
 
     // Stops game when the time has ended or the user answered all questions
-    public void endGame(ArrayList<String> justQuestions, ArrayList<String> correctAnswers, ArrayList<String> userAnswers, String userTime) {
+    public void endGame(
+            ArrayList<String> justQuestions,
+            ArrayList<String> correctAnswers,
+            ArrayList<String> userAnswers,
+            String userTime
+    ) {
 
         updateSecondsCounter.interrupt();
 
@@ -393,7 +399,7 @@ public class GameActivity extends AppCompatActivity {
         toGameResumeIntent.putExtra("questions", justQuestions.toString());
         toGameResumeIntent.putExtra("correctAnswers", correctAnswers.toString());
         toGameResumeIntent.putExtra("userAnswers", userAnswers.toString());
-        toGameResumeIntent.putExtra("userTime", Integer.toString(60 - Integer.parseInt(userTime)));
+        toGameResumeIntent.putExtra("userTime", Integer.toString(Integer.parseInt(time) - Integer.parseInt(userTime)));
 
         questions = "";
 

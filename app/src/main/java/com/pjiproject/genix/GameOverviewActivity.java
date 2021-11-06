@@ -34,7 +34,6 @@ public class GameOverviewActivity extends AppCompatActivity {
     ArrayList<String> userAnswers;*/
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
