@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -259,10 +260,6 @@ public class CreateGameActivity extends AppCompatActivity {
                     "&difficulty=" + difficulty +
                     "&type=" + type;
 
-
-            System.out.println(amount);
-            System.out.println(amountId);
-
             fetchQuestions = new FetchQuestions(urlParameters);
 
             ExecutorService service;
@@ -282,15 +279,25 @@ public class CreateGameActivity extends AppCompatActivity {
 
             }
 
-            System.out.print("On CreateActivity: " + questions);
+            if (questions == null) {
 
-            Intent toGameActivityIntent = new Intent(getApplicationContext(), GameActivity.class);
-            toGameActivityIntent.putExtra("questionsString", questions);
-            toGameActivityIntent.putExtra("time", time);
-            toGameActivityIntent.putExtra("type", "1");
+                Toast.makeText(
+                        getApplicationContext(),
+                        "Make sure you have an internet connection!",
+                        Toast.LENGTH_SHORT
+                ).show();
 
-            startActivity(toGameActivityIntent);
-            finish();
+            } else {
+
+                Intent toGameActivityIntent = new Intent(getApplicationContext(), GameActivity.class);
+                toGameActivityIntent.putExtra("questionsString", questions);
+                toGameActivityIntent.putExtra("time", time);
+                toGameActivityIntent.putExtra("type", "1");
+
+                startActivity(toGameActivityIntent);
+                finish();
+
+            }
 
         });
 

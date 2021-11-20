@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.simple.*;
 import org.json.simple.JSONArray;
@@ -122,114 +123,124 @@ public class GameActivity extends AppCompatActivity {
         try {
 
             jsonQuestionsObject = (JSONObject) jsonParser.parse(questions);
-            JSONArray jsonQuestionsArray = (JSONArray) jsonQuestionsObject.get("results");
+            if (Integer.parseInt(jsonQuestionsObject.get("response_code").toString()) == 1) {
 
-            lblSlashAllQuestionsNumber.setText("/ " + jsonQuestionsArray.size());
+                Intent toErrorActivity = new Intent(getApplicationContext(), ErrorHandlingActivity.class);
+                startActivity(toErrorActivity);
+                finish();
 
-            // Assigns the first question
-            JSONObject jsonQuestion = (JSONObject) jsonQuestionsArray.get(0);
-            lblCurrentQuestion.setText(decodeBase64data(jsonQuestion.get("question").toString()));
+            } else {
 
-            justQuestions.add(decodeBase64data(jsonQuestion.get("question").toString()));
+                JSONArray jsonQuestionsArray = (JSONArray) jsonQuestionsObject.get("results");
 
-            JSONArray incorrectAnswers = (JSONArray) jsonQuestion.get("incorrect_answers");
-            assignAnswersToRandomButton(jsonQuestion, incorrectAnswers);
+                lblSlashAllQuestionsNumber.setText("/ " + jsonQuestionsArray.size());
 
+                // Assigns the first question
+                JSONObject jsonQuestion = (JSONObject) jsonQuestionsArray.get(0);
+                lblCurrentQuestion.setText(decodeBase64data(jsonQuestion.get("question").toString()));
 
-            // Create answer buttons
-            class ClickAnswerListener implements View.OnClickListener {
+                justQuestions.add(decodeBase64data(jsonQuestion.get("question").toString()));
 
-                @Override
-                public void onClick(View view) {
-
-                    questionIndex++;
-
-                    switch (view.getId()) {
-
-                        case R.id.btnChoice1:
-                            userAnswers.add(btnChoice1.getText().toString());
-                            break;
-
-                        case R.id.btnChoice2:
-                            userAnswers.add(btnChoice2.getText().toString());
-                            break;
-
-                        case R.id.btnChoice3:
-                            userAnswers.add(btnChoice3.getText().toString());
-                            break;
-
-                        case R.id.btnChoice4:
-                            userAnswers.add(btnChoice4.getText().toString());
-                            break;
-
-                    }
-
-                    if (questionIndex < jsonQuestionsArray.size() && gameSeconds >= 0) {
-
-                        JSONObject jsonQuestion = (JSONObject) jsonQuestionsArray.get(questionIndex);
-                        JSONArray incorrectAnswers = (JSONArray) jsonQuestion.get("incorrect_answers");
-
-                        lblCurrentQuestion.setText(decodeBase64data(jsonQuestion.get("question").toString()));
-                        lblCurrentQuestionNumber.setText(Integer.toString(questionIndex + 1));
-
-                        justQuestions.add(decodeBase64data(jsonQuestion.get("question").toString()));
-
-                        assignAnswersToRandomButton(jsonQuestion, incorrectAnswers);
-
-                    } else {
-
-                        endGame(justQuestions, correctAnswers, userAnswers, lblTimeRemaining.getText().toString());
-
-                    }
-
-                }
-
-            }
-
-            btnChoice1.setOnClickListener(new ClickAnswerListener());
-            btnChoice2.setOnClickListener(new ClickAnswerListener());
-            btnChoice3.setOnClickListener(new ClickAnswerListener());
-            btnChoice4.setOnClickListener(new ClickAnswerListener());
+                JSONArray incorrectAnswers = (JSONArray) jsonQuestion.get("incorrect_answers");
+                assignAnswersToRandomButton(jsonQuestion, incorrectAnswers);
 
 
-            // Changes game seconds
-            updateSecondsCounter = new Thread() {
+                // Create answer buttons
+                class ClickAnswerListener implements View.OnClickListener {
 
-                @Override
-                public void run() {
+                    @Override
+                    public void onClick(View view) {
 
-                    try {
+                        questionIndex++;
 
-                        while (!this.isInterrupted()) {
+                        switch (view.getId()) {
 
-                            Thread.sleep(1000);
-                            runOnUiThread(() -> {
+                            case R.id.btnChoice1:
+                                userAnswers.add(btnChoice1.getText().toString());
+                                break;
 
-                                if (gameSeconds > 0) {
+                            case R.id.btnChoice2:
+                                userAnswers.add(btnChoice2.getText().toString());
+                                break;
 
-                                    gameSeconds--;
-                                    lblTimeRemaining.setText(Integer.toString(gameSeconds));
+                            case R.id.btnChoice3:
+                                userAnswers.add(btnChoice3.getText().toString());
+                                break;
 
-                                } else {
-
-                                    endGame(justQuestions, correctAnswers, userAnswers, lblTimeRemaining.getText().toString());
-
-                                }
-
-                            });
+                            case R.id.btnChoice4:
+                                userAnswers.add(btnChoice4.getText().toString());
+                                break;
 
                         }
 
-                    } catch (InterruptedException e) {
+                        if (questionIndex < jsonQuestionsArray.size() && gameSeconds >= 0) {
 
-                        e.printStackTrace();
+                            JSONObject jsonQuestion = (JSONObject) jsonQuestionsArray.get(questionIndex);
+                            JSONArray incorrectAnswers = (JSONArray) jsonQuestion.get("incorrect_answers");
+
+                            lblCurrentQuestion.setText(decodeBase64data(jsonQuestion.get("question").toString()));
+                            lblCurrentQuestionNumber.setText(Integer.toString(questionIndex + 1));
+
+                            justQuestions.add(decodeBase64data(jsonQuestion.get("question").toString()));
+
+                            assignAnswersToRandomButton(jsonQuestion, incorrectAnswers);
+
+                        } else {
+
+                            endGame(justQuestions, correctAnswers, userAnswers, lblTimeRemaining.getText().toString());
+
+                        }
 
                     }
 
                 }
 
-            };
-            updateSecondsCounter.start();
+                btnChoice1.setOnClickListener(new ClickAnswerListener());
+                btnChoice2.setOnClickListener(new ClickAnswerListener());
+                btnChoice3.setOnClickListener(new ClickAnswerListener());
+                btnChoice4.setOnClickListener(new ClickAnswerListener());
+
+
+                // Changes game seconds
+                updateSecondsCounter = new Thread() {
+
+                    @Override
+                    public void run() {
+
+                        try {
+
+                            while (!this.isInterrupted()) {
+
+                                Thread.sleep(1000);
+                                runOnUiThread(() -> {
+
+                                    if (gameSeconds > 0) {
+
+                                        gameSeconds--;
+                                        lblTimeRemaining.setText(Integer.toString(gameSeconds));
+
+                                    } else {
+
+                                        endGame(justQuestions, correctAnswers, userAnswers, lblTimeRemaining.getText().toString());
+
+                                    }
+
+                                });
+
+                            }
+
+                        } catch (InterruptedException e) {
+
+                            e.printStackTrace();
+
+                        }
+
+                    }
+
+                };
+                updateSecondsCounter.start();
+
+            }
 
         } catch (ParseException e) {
 
@@ -396,9 +407,9 @@ public class GameActivity extends AppCompatActivity {
         updateSecondsCounter.interrupt();
 
         Intent toGameResumeIntent = new Intent(getApplicationContext(), GameOverviewActivity.class);
-        toGameResumeIntent.putExtra("questions", justQuestions.toString());
-        toGameResumeIntent.putExtra("correctAnswers", correctAnswers.toString());
-        toGameResumeIntent.putExtra("userAnswers", userAnswers.toString());
+        toGameResumeIntent.putStringArrayListExtra("questions", justQuestions);
+        toGameResumeIntent.putStringArrayListExtra("correctAnswers", correctAnswers);
+        toGameResumeIntent.putStringArrayListExtra("userAnswers", userAnswers);
         toGameResumeIntent.putExtra("userTime", Integer.toString(Integer.parseInt(time) - Integer.parseInt(userTime)));
 
         questions = "";

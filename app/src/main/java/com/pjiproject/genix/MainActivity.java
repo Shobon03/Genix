@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -60,12 +61,19 @@ public class MainActivity extends AppCompatActivity {
         btnChooseGame = findViewById(R.id.btnChooseGame);
         btnChooseGame.setOnClickListener(new CreateGameListener());
 
-        /* btnGoToRanking = findViewById(R.id.btnGoToRanking);
-        btnGoToRanking.setOnClickListener(new PlayGameListener()); */
+        btnGoToRanking = findViewById(R.id.btnGoToRanking);
+        btnGoToRanking.setOnClickListener(view -> {
+
+            Toast.makeText(
+                    getApplicationContext(),
+                    "Not implemented yet!",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+        });
 
         imgAbout = findViewById(R.id.imgAbout);
         imgAbout.setOnClickListener(new AboutActivityListener());
-
 
     }
 
@@ -97,12 +105,24 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            // Go to game activity
-            Intent toGameActivityIntent = new Intent(getApplicationContext(), GameActivity.class);
-            toGameActivityIntent.putExtra("questionsString", questions);
-            toGameActivityIntent.putExtra("type", "0");
+            if (questions == null) {
 
-            startActivity(toGameActivityIntent);
+                Toast.makeText(
+                        getApplicationContext(),
+                        "Make sure you have an internet connection!",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+            } else {
+
+                // Go to game activity
+                Intent toGameActivityIntent = new Intent(getApplicationContext(), GameActivity.class);
+                toGameActivityIntent.putExtra("questionsString", questions);
+                toGameActivityIntent.putExtra("type", "0");
+
+                startActivity(toGameActivityIntent);
+
+            }
 
         }
 

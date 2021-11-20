@@ -51,10 +51,14 @@
     <string name="create_number">Number of questions:</string>
     <string name="create_difficulty">Difficulty:</string>
     <string name="create_type">Type of questions:</string>
-    <string name="create_time">Time:</string>
+    <string name="create_time">Total time:</string>
     <string name="create_generate">Generate game!</string>
     <string name="create_reset">Reset</string>
 
+    <!-- Error activity -->
+    <string name="error_message">There was an error when fetching questions! Please go back and try a new game!</string>
+    <string name="error_label">Error!</string>
+    <string name="error_back_button">Back to home</string>
 
     <!-- String-arrays -->
     <string-array name="create_arr_category">

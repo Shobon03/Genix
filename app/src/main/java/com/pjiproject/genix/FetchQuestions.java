@@ -1,5 +1,9 @@
 package com.pjiproject.genix;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.io.*;
 import java.net.*;
 import java.util.concurrent.Callable;
@@ -64,8 +68,6 @@ public class FetchQuestions implements Callable<String> {
             }
 
             rd.close();
-
-            System.out.println("On FetchQuestions: " + response.toString());
 
             return response.toString();
 

@@ -30,7 +30,7 @@ public class AboutActivity extends AppCompatActivity {
         imgReturnToMenu = findViewById(R.id.imgReturnToMenu);
         imgReturnToMenu.setOnClickListener(view -> finish());
 
-        btnSource = findViewById(R.id.btnSource);
+        btnSource = findViewById(R.id.btnBack);
         // btnSource.setOnClickListener();
 
         btnOSLicenses = findViewById(R.id.btnOSLicenses);
