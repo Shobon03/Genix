@@ -11,6 +11,11 @@
         <entry key="..\:/Users/Matheus/Desktop/Arquivos/IFSP/pji/genix/app/src/main/res/layout/activity_main_menu.xml" value="0.33" />
         <entry key="..\:/Users/Matheus/Desktop/Arquivos/IFSP/pji/genix/app/src/main/res/layout/activity_ranking.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Matheus/Desktop/Arquivos/IFSP/pji/genix/app/src/main/res/layout/activity_tutorial.xml" value="0.27291666666666664" />
+        <entry key="app/src/main/res/layout/activity_about.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_create_game.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_error.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/activity_game_overview.xml" value="0.26458333333333334" />
+        <entry key="app/src/main/res/layout/question_list_item.xml" value="0.5" />
       </map>
     </option>
   </component>

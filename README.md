@@ -60,10 +60,8 @@ Here's a list of links of code snippets that were used on Genix.
 
 - [Make TextView update every second](https://stackoverflow.com/questions/14814714/update-textview-every-second)
 	- Answer by ***endian***
-- [See if user has opened the App before]()
-    - Answer by ***TBA***
-- [Change theme in Activity]()
-    - Answer by ***TBA***
+- [See if user has opened the App before](https://stackoverflow.com/questions/30943527/open-activity-only-for-the-first-run)
+    - Answer by ***user370305***
 - [Make HTTP request in Java](https://stackoverflow.com/questions/1359689/how-to-send-http-request-in-java)
 	- Answer by ***duffymo***
 - [Make a Thread return an object](https://stackoverflow.com/questions/3141158/how-can-a-thread-return-a-value-after-finishing-its-job)

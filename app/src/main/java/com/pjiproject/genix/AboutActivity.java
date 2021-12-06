@@ -13,7 +13,6 @@ public class AboutActivity extends AppCompatActivity {
     private Button btnSource;
     private Button btnOSLicenses;
 
-
     // Image
     private ImageView imgReturnToMenu;
 
